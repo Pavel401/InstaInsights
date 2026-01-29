@@ -6,7 +6,7 @@ import { StatCard } from './stat-card';
 import { AnalyticsView } from './analytics-view';
 import { ContactsList } from './contacts-list';
 import { UserMinus, Heart, ArrowRightLeft, Users, Menu, Ban, Star, ShieldAlert, EyeOff, Activity } from 'lucide-react';
-import { saveToDB, loadFromDB, clearDB, deleteProfileFromCategory } from '@/lib/db';
+import { saveStats, getStats, clearData, deleteProfile } from '@/app/actions';
 
 interface DashboardProps {
   stats: ConnectionStats | null;
@@ -22,9 +22,9 @@ export function Dashboard({ stats: initialStats, onReset, onDataLoaded }: Dashbo
   useEffect(() => {
     if (initialStats) {
         setStats(initialStats);
-        saveToDB(initialStats);
+        saveStats(initialStats);
     } else {
-        loadFromDB().then((savedStats) => {
+        getStats().then((savedStats) => {
             if (savedStats) {
                 setStats(savedStats);
                 onDataLoaded(savedStats);
@@ -34,7 +34,7 @@ export function Dashboard({ stats: initialStats, onReset, onDataLoaded }: Dashbo
   }, [initialStats]);
 
   const handleReset = async () => {
-      await clearDB();
+      await clearData();
       setStats(null);
       onReset();
   };
@@ -63,9 +63,9 @@ export function Dashboard({ stats: initialStats, onReset, onDataLoaded }: Dashbo
       const category = categoryMap[view];
       if (!category) return;
 
-      const updatedStats = await deleteProfileFromCategory(category, username);
+      const updatedStats = await deleteProfile(category, username);
       if (updatedStats) {
-          setStats({...updatedStats});
+          setStats(updatedStats);
       }
   };
 

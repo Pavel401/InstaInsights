@@ -1,16 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ConnectionStats } from '@/lib/types';
 import { FileUpload } from './components/file-upload';
 import { Dashboard } from './components/dashboard';
+import { getStats } from './actions';
 
 
 export default function Home() {
   const [stats, setStats] = useState<ConnectionStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getStats().then((data) => {
+      if (data) {
+        setStats(data);
+      }
+      setIsLoading(false);
+    });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-zinc-950 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+      </main>
+    );
+  }
 
   if (stats) {
-    return <Dashboard stats={stats} onReset={() => setStats(null)} />;
+    return <Dashboard stats={stats} onReset={() => setStats(null)} onDataLoaded={setStats} />;
   }
 
   return (

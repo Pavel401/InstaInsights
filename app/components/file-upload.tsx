@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { AnalyzedProfile, ConnectionStats } from '@/lib/types';
 import { parseFollowers, parseFollowing, analyzeConnections, parseContacts, parseGenericList } from '@/lib/parser';
+import { saveStats } from '@/app/actions';
 
 interface FileUploadProps {
   onDataLoaded: (stats: ConnectionStats) => void;
@@ -142,6 +143,9 @@ export function FileUpload({ onDataLoaded }: FileUploadProps) {
         removedSuggestions,
         requestsReceived
       );
+
+      // Persist to server SQLite
+      await saveStats(stats);
 
       onDataLoaded(stats);
     } catch (err) {
