@@ -80,7 +80,3 @@ To use this tool, you need to request your data from Instagram.
 - **SQLite**: Local database for fast querying and persistence.
 - **TailwindCSS**: Styling.
 - **Framer Motion**: Animations.
-
-## License
-
-MIT
