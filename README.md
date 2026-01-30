@@ -54,8 +54,8 @@ https://help.instagram.com/181231772500920 (Read this)
 1.  **Clone the Repository**:
 
     ```bash
-    git clone https://github.com/yourusername/insta-backup-viewer.git
-    cd insta-backup-viewer
+    git clone https://github.com/Pavel40/InstaInsights.git
+    cd InstaInsights
     ```
 
 2.  **Install Dependencies**:
