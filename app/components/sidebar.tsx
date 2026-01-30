@@ -15,7 +15,9 @@ import {
   History,
   UserX,
   Mail,
-  Activity
+  Activity,
+  Image,
+  MessageSquare
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -38,7 +40,10 @@ export type ViewMode =
   | 'recentlyUnfollowed'
   | 'removedSuggestions'
   | 'requestsReceived'
-  | 'analytics';
+  | 'analytics'
+  | 'media'
+  | 'messages'
+  | 'activity';
 
 interface SidebarProps {
   currentView: ViewMode;
@@ -72,7 +77,9 @@ export function Sidebar({ currentView, onViewChange, onReset, counts, isOpen, on
       title: 'Main',
       items: [
         { id: 'overview' as ViewMode, label: 'Dashboard', icon: LayoutDashboard },
-        { id: 'analytics' as ViewMode, label: 'Analytics', icon: Activity },
+        { id: 'media' as ViewMode, label: 'Media Gallery', icon: Image },
+        { id: 'messages' as ViewMode, label: 'Messages', icon: MessageSquare },
+        { id: 'activity' as ViewMode, label: 'Your Activity', icon: Activity },
         { id: 'followers' as ViewMode, label: 'Followers', icon: Users, count: counts.followers },
         { id: 'following' as ViewMode, label: 'Following', icon: UserPlus, count: counts.following },
       ]
@@ -136,7 +143,7 @@ export function Sidebar({ currentView, onViewChange, onReset, counts, isOpen, on
             <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
               InstaInsights
             </h1>
-            <p className="text-xs text-zinc-500 mt-1">Local Visualizer</p>
+            <p className="text-xs text-zinc-500 mt-1">Local Data Visualizer</p>
           </div>
           <button onClick={onClose} className="lg:hidden text-zinc-400 hover:text-white">
             <X size={20} />

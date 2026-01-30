@@ -4,9 +4,13 @@ import { Sidebar, ViewMode } from './sidebar';
 import { ProfileList } from './profile-list';
 import { StatCard } from './stat-card';
 import { AnalyticsView } from './analytics-view';
+import { MediaGallery } from './media-gallery';
+import { ChatViewer } from './chat-viewer';
+import { ActivityViewer } from './activity-viewer';
 import { ContactsList } from './contacts-list';
-import { UserMinus, Heart, ArrowRightLeft, Users, Menu, Ban, Star, ShieldAlert, EyeOff, Activity } from 'lucide-react';
-import { saveStats, getStats, clearData, deleteProfile } from '@/app/actions';
+import { UserMinus, Heart, ArrowRightLeft, Users, Menu, Ban, Star, ShieldAlert, EyeOff, Activity, MessageSquare } from 'lucide-react';
+import { saveStats, getStats, clearData, deleteProfile, getMediaPath, setMediaPath } from '@/app/actions';
+
 
 interface DashboardProps {
   stats: ConnectionStats | null;
@@ -22,7 +26,6 @@ export function Dashboard({ stats: initialStats, onReset, onDataLoaded }: Dashbo
   useEffect(() => {
     if (initialStats) {
         setStats(initialStats);
-        saveStats(initialStats);
     } else {
         getStats().then((savedStats) => {
             if (savedStats) {
@@ -31,6 +34,16 @@ export function Dashboard({ stats: initialStats, onReset, onDataLoaded }: Dashbo
             }
         });
     }
+
+    // Self-healing: Ensure media path is set
+    getMediaPath().then((path) => {
+        if (!path) {
+            console.log('Media path missing, setting default...');
+            setMediaPath('/Users/skmabudalam/Documents/Insta Tools/instagram-pavel_alam_-2026-01-29-r39vO3JN/media');
+        } else {
+            console.log('Media path already set:', path);
+        }
+    });
   }, [initialStats]);
 
   const handleReset = async () => {
@@ -178,8 +191,22 @@ export function Dashboard({ stats: initialStats, onReset, onDataLoaded }: Dashbo
          );
     }
 
+
+
     if (view === 'analytics') {
         return <AnalyticsView stats={stats} />;
+    }
+
+    if (view === 'media') {
+        return <div className="h-screen"><MediaGallery /></div>;
+    }
+
+    if (view === 'messages') {
+        return <div className="h-[calc(100vh-4rem)] lg:h-screen p-4 md:p-8"><ChatViewer /></div>;
+    }
+
+    if (view === 'activity') {
+        return <div className="h-[calc(100vh-4rem)] lg:h-screen p-4 md:p-8"><ActivityViewer /></div>;
     }
 
     const dataMap: Record<string, any[]> = {
