@@ -16,6 +16,8 @@
 
 To use this tool, you need to request your data from Instagram.
 
+https://help.instagram.com/181231772500920 (Read this)
+
 1.  **Open Instagram App (Mobile)**:
     - Go to your profile -> Menu (3 lines) -> **Your Activity**.
     - Scroll down to **Download your information**.
